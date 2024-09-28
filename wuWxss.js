@@ -236,11 +236,13 @@ function doWxss(dir, cb, mainDir, nowDir) {
             mainCode = mainCode.replace('var setCssToHead = function', 'var setCssToHead2 = function');
 
             code = code.slice(code.lastIndexOf('var setCssToHead = function(file, _xcInvalid'));
-            code = code.slice(code.lastIndexOf('\nvar _C= ') + 1);
+            code = code.slice(code.search(/\bvar\s+_C\s*=\s*/))
 
             code = code.slice(0, code.indexOf('\n'));
+            code = 'var __COMMON_STYLESHEETS__ = __COMMON_STYLESHEETS__||{}\n' + code + "\n_C"
+            // console.log('do css vm: ' + code);
             let vm = new VM({sandbox: {}});
-            pureData = vm.run(code + "\n_C");
+            pureData = vm.run(code);
 
 			console.log("Guess wxss(first turn)...");
             preRun(dir, frameFile, mainCode, files, () => {
