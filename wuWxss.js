@@ -33,7 +33,9 @@ function doWxss(dir, cb, mainDir, nowDir) {
 			}
 
             if (typeof data === "number") return addStat(data);
-            for (let content of data) if (typeof content === "object" && content[0] == 2) addStat(content[1]);
+            if (data) {
+                for (let content of data) if (typeof content === "object" && content[0] == 2) addStat(content[1]);
+            }
         }
 
         function makeup(data) {
